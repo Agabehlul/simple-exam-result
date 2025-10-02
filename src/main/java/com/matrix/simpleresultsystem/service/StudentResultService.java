@@ -5,6 +5,7 @@ import com.matrix.simpleresultsystem.repository.StudentResultRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentResultService {
@@ -20,10 +21,20 @@ public class StudentResultService {
 //    }
 
     public StudentResult getByJobNumber(Long jobNumber) {
-        System.err.println(jobNumber);
-        return repository.findByJobNumber(jobNumber)
-                .orElseThrow(() -> new RuntimeException("Student not found with jobNumber: " + jobNumber));
+        Optional<StudentResult> optionalResult = repository.findByJobNumber(jobNumber);
+
+        // Nəticəni logla
+        optionalResult.ifPresentOrElse(
+                result -> System.err.println(result.toString()),
+                () -> System.err.println("Student not found with jobNumber: " + jobNumber)
+        );
+
+        // Nəticəni qaytar və ya exception at
+        return optionalResult.orElseThrow(
+                () -> new RuntimeException("Student not found with jobNumber: " + jobNumber)
+        );
     }
+
 
 //    public StudentResult saveResult(StudentResult result) {
 //        return repository.save(result);

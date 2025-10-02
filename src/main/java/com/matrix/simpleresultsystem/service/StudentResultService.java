@@ -20,7 +20,7 @@ public class StudentResultService {
 //    }
 
     public StudentResult getByJobNumber(Long jobNumber) {
-        System.out.println(jobNumber);
+        System.err.println(jobNumber);
         return repository.findByJobNumber(jobNumber)
                 .orElseThrow(() -> new RuntimeException("Student not found with jobNumber: " + jobNumber));
     }

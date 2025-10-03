@@ -2,9 +2,11 @@ package com.matrix.simpleresultsystem.controller;
 
 import com.matrix.simpleresultsystem.entity.StudentResult;
 import com.matrix.simpleresultsystem.service.StudentResultService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/results")
@@ -25,6 +27,22 @@ public class StudentResultController {
     @GetMapping("/{jobNumber}")
     public StudentResult getByJobNumber(@PathVariable Long jobNumber) {
         return service.getByJobNumber(jobNumber);
+    }
+
+    @GetMapping("/find-job-number")
+    public ResponseEntity<?> findJobNumber(
+            @RequestParam String name,
+            @RequestParam String surname,
+            @RequestParam String fatherName) {
+
+        return service.findByFullName(name, surname, fatherName)
+                .map(student -> ResponseEntity.ok(Map.of(
+                        "jobNumber", student.getJobNumber(),
+                        "fullName", student.getSurname() + " " + student.getName(),
+                        "grade", student.getGrade()
+                )))
+                .orElse(ResponseEntity.status(404)
+                        .body(Map.of("message", "Daxil etdiyiniz məlumatlara uyğun şagird tapılmadı.")));
     }
 
 //    @PostMapping

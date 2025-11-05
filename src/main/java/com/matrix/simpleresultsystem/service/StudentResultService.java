@@ -18,44 +18,40 @@ public class StudentResultService {
         this.repository = repository;
     }
 
-//    public List<StudentResult> getAllResults() {
-//        return repository.findAll();
-//    }
+    public StudentResult getByExamAndJobNumber(Long examId, Long jobNumber) {
+        Optional<StudentResult> optionalResult = repository.findByExamAndJobNumber(examId, jobNumber);
 
-    public StudentResult getByJobNumber(Long jobNumber) {
-        Optional<StudentResult> optionalResult = repository.findByJobNumber(jobNumber);
-
-        // Nəticəni logla
         optionalResult.ifPresentOrElse(
-                result -> System.err.println(result.toString()),
-                () -> System.err.println(" ❌ Student not found with jobNumber: " + jobNumber)
+                result -> log.info("✅ Tapıldı: {} {} — Exam ID: {}, İş nömrəsi: {}",
+                        result.getSurname(), result.getName(), examId, jobNumber),
+                () -> log.warn("❌ Tapılmadı: Exam ID {}, İş nömrəsi {}", examId, jobNumber)
         );
 
-        // Nəticəni qaytar və ya exception at
         return optionalResult.orElseThrow(
-                () -> new RuntimeException("❌ Student not found with jobNumber: " + jobNumber)
+                () -> new RuntimeException("❌ Nəticə tapılmadı (Exam ID: " + examId + ", İş nömrəsi: " + jobNumber + ")")
         );
     }
 
+    public Optional<StudentResult> findByFullNameAndExamId(Long examId, String name, String surname, String fatherName) {
+        log.info("Ad-soyada görə axtarış: ad='{}', soyad='{}', ata adı='{}', examId={}",
+                name, surname, fatherName, examId);
 
-    public Optional<StudentResult> findByFullName(String name, String surname, String fatherName) {
-        log.info("Ad-soyada görə axtarış: ad='{}', soyad='{}', ata adı='{}'",
-                name, surname, fatherName);
-
-        Optional<StudentResult> result = repository.findByFullNameIgnoreCase(name, surname, fatherName);
+        Optional<StudentResult> result = repository.findByFullNameAndExamIdIgnoreCase(examId, name, surname, fatherName);
 
         if (result.isPresent()) {
-            log.info("✅ Tapıldı: {} {} — İş nömrəsi: {}",
-                    result.get().getSurname(),
-                    result.get().getName(),
-                    result.get().getJobNumber());
+            log.info("✅ Tapıldı: {} {} — İş nömrəsi: {}", result.get().getSurname(), result.get().getName(), result.get().getJobNumber());
         } else {
-            log.warn("❌ Tapılmadı: {} {} ({})", surname, name, fatherName);
+            log.warn("❌ Tapılmadı: {} {} ({}) | examId={}", surname, name, fatherName, examId);
         }
 
         return result;
     }
 
+//    public List<StudentResult> getAllByExam(Long examId) {
+//        return repository.findAllByExamId(examId);
+//    }
+
+//    public StudentResult saveResult(StudentResult result) {
+//        return repository.save(result);
+//    }
 }
-
-

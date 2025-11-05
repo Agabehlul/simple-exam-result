@@ -3,18 +3,23 @@ package com.matrix.simpleresultsystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
-
 @Entity
 @Table(name = "students")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudentResult {
 
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // unikal ID hər nəticə üçün
+
+    @Column(name = "exam_id")
+    private Long examId; // yeni sütun — imtahan ID
+
     @Column(name = "is_nomresi")
     private Long jobNumber;
-    // artıq primary key, identity və unique
 
     @Column(name = "soyad")
     private String surname;
@@ -39,6 +44,4 @@ public class StudentResult {
 
     @Column(name = "yekun")
     private String total;
-
-    // getters və setters
 }

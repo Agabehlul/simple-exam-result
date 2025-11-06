@@ -51,23 +51,23 @@ public class StudentResultService {
     }
 
     // Əlavə log üçün save funksiyası nümunəsi
-    public StudentResult saveResult(StudentResult result) {
-        log.info("💾 Yeni nəticə əlavə olunur: {} {} ({}) — Exam ID: {}, İş nömrəsi: {}",
-                result.getSurname(), result.getName(), result.getFatherName(), result.getExamId(), result.getJobNumber());
-
-        StudentResult savedResult = repository.save(result);
-
-        log.info("✅ Nəticə saxlanıldı: ID = {}", savedResult.getId());
-        return savedResult;
-    }
-
-    // Bütün exam üçün nəticələr
-    public List<StudentResult> getAllByExam(Long examId) {
-        log.info("📄 Bütün nəticələr axtarılır: Exam ID = {}", examId);
-
-        List<StudentResult> results = repository.findAllByExamId(examId);
-
-        log.info("📊 {} nəticə tapıldı Exam ID = {}", results.size(), examId);
-        return results;
-    }
+//    public StudentResult saveResult(StudentResult result) {
+//        log.info("💾 Yeni nəticə əlavə olunur: {} {} ({}) — Exam ID: {}, İş nömrəsi: {}",
+//                result.getSurname(), result.getName(), result.getFatherName(), result.getExamId(), result.getJobNumber());
+//
+//        StudentResult savedResult = repository.save(result);
+//
+//        log.info("✅ Nəticə saxlanıldı: ID = {}", savedResult.getId());
+//        return savedResult;
+//    }
+//
+//    // Bütün exam üçün nəticələr
+//    public List<StudentResult> getAllByExam(Long examId) {
+//        log.info("📄 Bütün nəticələr axtarılır: Exam ID = {}", examId);
+//
+//        List<StudentResult> results = repository.findAllByExamId(examId);
+//
+//        log.info("📊 {} nəticə tapıldı Exam ID = {}", results.size(), examId);
+//        return results;
+//    }
 }
